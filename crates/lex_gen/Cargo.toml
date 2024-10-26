@@ -1,0 +1,9 @@
+[package]
+name = "lex_gen"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+colored = "2.1.0"
+lex_derive = { path = "../lex_derive/" }
+regex = "1.11.1"
