@@ -25,12 +25,12 @@ pub fn impl_token_macro(ast: syn::DeriveInput) -> TokenStream {
                 panic!("missing matcher for #[terminal] {ident}");
             };
 
-            let _ = (ident.clone(), quote! { position: lex_gen::Span, });
+            let _ = (ident.clone(), quote! { position: lachs::Span, });
 
             let (fields, insertions) = if *attr_ident == "terminal" {
                 (
                     quote! {
-                        position: lex_gen::Span,
+                        position: lachs::Span,
                     },
                     {
                         let literal = literal.value();
@@ -43,7 +43,7 @@ pub fn impl_token_macro(ast: syn::DeriveInput) -> TokenStream {
             } else if *attr_ident == "literal" {
                 (
                     quote! {
-                        position: lex_gen::Span,
+                        position: lachs::Span,
                         value: String,
                     },
                     {
@@ -106,7 +106,7 @@ pub fn impl_token_macro(ast: syn::DeriveInput) -> TokenStream {
         impl Eq for #ident {}
 
         impl #ident {
-            fn position(&self) -> lex_gen::Span {
+            fn position(&self) -> lachs::Span {
                 match self {
                     #(#get_position_cases)*
                 }
@@ -122,8 +122,8 @@ pub fn impl_token_macro(ast: syn::DeriveInput) -> TokenStream {
         }
 
         mod gen {
-            use lex_gen::colored::Colorize;
-            use lex_gen::regex::{Match, Regex};
+            use lachs::colored::Colorize;
+            use lachs::regex::{Match, Regex};
 
             macro_rules! terminal {
                 ($entries:ident, $name:ident, $value:expr) => {
@@ -131,7 +131,7 @@ pub fn impl_token_macro(ast: syn::DeriveInput) -> TokenStream {
                         &mut $entries,
                         Regex::new(&$value.escape_unicode().to_string()).unwrap(),
                         |matched, (line, col), source| super::#ident::$name {
-                            position: lex_gen::Span { start: (line, col), end: (line, (col+matched.as_str().len())), source }
+                            position: lachs::Span { start: (line, col), end: (line, (col+matched.as_str().len())), source }
                         },
                     );
                 };
@@ -144,7 +144,7 @@ pub fn impl_token_macro(ast: syn::DeriveInput) -> TokenStream {
                         Regex::new($value).unwrap(),
                         |matched, (line, col), source| super::#ident::$name {
                             value: matched.as_str().parse().unwrap(),
-                            position: lex_gen::Span { start: (line, col), end: (line, (col+matched.as_str().len())), source }
+                            position: lachs::Span { start: (line, col), end: (line, (col+matched.as_str().len())), source }
                         },
                     );
                 };

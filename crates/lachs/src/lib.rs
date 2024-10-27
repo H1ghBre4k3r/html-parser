@@ -1,5 +1,5 @@
 pub use colored;
-pub use lex_derive::{token, LooseEq};
+pub use lachs_derive::{token, LooseEq};
 pub use regex;
 
 use colored::Colorize;

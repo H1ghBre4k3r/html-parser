@@ -1,9 +1,9 @@
 [package]
-name = "lex_gen"
+name = "lachs"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 colored = "2.1.0"
-lex_derive = { path = "../lex_derive/" }
+lachs_derive = { path = "../lachs_derive/" }
 regex = "1.11.1"
