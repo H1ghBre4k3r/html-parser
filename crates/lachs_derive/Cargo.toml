@@ -3,10 +3,9 @@ name = "lachs_derive"
 version = "0.1.0"
 edition = "2021"
 authors = ["Louis Meyer (H1ghBre4k3r) <h1ghbe4k3r@dev.bre4k3r.de>"]
-license = "GPL-3.0"
+license = "MIT"
 readme = "README.md"
-repository = "https://github.com/H1ghBre4k3r/pesca-parser"
-description = "Some derive macros for creating a lexer"
+description = "Some derive macros for creating a lexer."
 
 [lib]
 proc-macro = true
