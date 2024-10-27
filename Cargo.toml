@@ -3,12 +3,13 @@ name = "html-parser"
 version = "0.1.0"
 edition = "2021"
 authors = ["Louis Meyer (H1ghBre4k3r) <h1ghbe4k3r@dev.bre4k3r.de>"]
-license = "GPL-3.0"
+license = "MIT"
 readme = "README.md"
-repository = "https://github.com/H1ghBre4k3r/pesca-parser"
+repository = "https://github.com/H1ghBre4k3r/html-parser"
+description = "Fast and simple (and hopefully at some point spec compliant) HTML parser."
 
 [workspace]
-members = ["crates/lex_gen", "crates/lex_derive"]
+members = ["crates/lachs", "crates/lachs_derive"]
 
 [dependencies]
-lex_gen = { path = "./crates/lex_gen/" }
+lachs = { path = "./crates/lachs/" }

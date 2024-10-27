@@ -1,4 +1,4 @@
-use lex_gen::token;
+use lachs::token;
 
 #[token]
 pub enum Token {
