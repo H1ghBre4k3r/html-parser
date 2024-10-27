@@ -9,5 +9,5 @@ description = "Crate for automatically creating a lexer based on a given enum."
 
 [dependencies]
 colored = "2.1.0"
-lachs_derive = { path = "../lachs_derive/" }
+lachs_derive = { version = "0.1.0", path = "../lachs_derive/" }
 regex = "1.11.1"
