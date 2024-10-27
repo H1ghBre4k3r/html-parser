@@ -1,12 +1,16 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{DataEnum, DeriveInput, Expr, ExprLit, Lit, Variant};
+use syn::{Expr, ExprLit, Lit, Variant};
 
-pub fn impl_token_macro(ast: syn::DeriveInput) -> TokenStream {
-    let DeriveInput { ident, data, .. } = ast;
-
-    let syn::Data::Enum(DataEnum { variants, .. }) = data else {
-        panic!()
+pub fn impl_token_macro(item: syn::Item) -> TokenStream {
+    let syn::Item::Enum(syn::ItemEnum {
+        ident,
+        variants,
+        vis,
+        ..
+    }) = item
+    else {
+        panic!("")
     };
 
     let variants_with_fields = variants.clone().into_iter().filter_map(|variant| {
@@ -90,7 +94,7 @@ pub fn impl_token_macro(ast: syn::DeriveInput) -> TokenStream {
 
     let gen = quote! {
         #[derive(Debug, Clone)]
-        pub enum #ident {
+        #vis enum #ident {
             #(#filled_variants)*
         }
 
