@@ -6,6 +6,7 @@ authors = ["Louis Meyer (H1ghBre4k3r) <h1ghbe4k3r@dev.bre4k3r.de>"]
 license = "MIT"
 readme = "README.md"
 description = "Crate for automatically creating a lexer based on a given enum."
+repository = "https://github.com/H1ghBre4k3r/html-parser"
 
 [dependencies]
 colored = "2.1.0"
