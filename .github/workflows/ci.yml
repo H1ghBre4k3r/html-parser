@@ -21,8 +21,6 @@ jobs:
           - rust: nightly
             experimental: true
         os:
-          # Check compilation works on common OSes
-          # (i.e. no path issues)
           - ubuntu-latest
           - macOS-latest
           - windows-latest
@@ -49,8 +47,8 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          # - macOS-latest
-          - self-hosted
+          - macOS-latest
+          - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
