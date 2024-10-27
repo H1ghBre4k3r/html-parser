@@ -6,6 +6,7 @@ authors = ["Louis Meyer (H1ghBre4k3r) <h1ghbe4k3r@dev.bre4k3r.de>"]
 license = "MIT"
 readme = "README.md"
 description = "Some derive macros for creating a lexer."
+repository = "https://github.com/H1ghBre4k3r/html-parser"
 
 [lib]
 proc-macro = true
