@@ -8,8 +8,5 @@ readme = "README.md"
 repository = "https://github.com/H1ghBre4k3r/html-parser"
 description = "Fast and simple (and hopefully at some point spec compliant) HTML parser."
 
-[workspace]
-members = ["crates/lachs", "crates/lachs_derive"]
-
 [dependencies]
-lachs = { path = "./crates/lachs/" }
+lachs = "0.1.1"
