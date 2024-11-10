@@ -1,17 +1,5 @@
-use lachs::token;
+mod lexer;
+mod parser;
 
-#[token]
-pub enum Token {
-    #[terminal("<")]
-    LAngle,
-    #[terminal(">")]
-    RAngle,
-    #[terminal("=")]
-    Equals,
-    #[literal("[1-9][0-9]*")]
-    Number,
-    #[literal("[^\\s\\\"\\'<>=]+")]
-    AttributeKey,
-    #[literal("\\\"[^\\\"]*\\\"")]
-    AttributeValue,
-}
+pub use lexer::*;
+pub use parser::*;

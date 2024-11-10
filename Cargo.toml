@@ -8,5 +8,9 @@ readme = "README.md"
 repository = "https://github.com/H1ghBre4k3r/html-parser"
 description = "Fast and simple (and hopefully at some point spec compliant) HTML parser."
 
+[workspace]
+members = ["./crates/tokenkind/"]
+
 [dependencies]
-lachs = "0.1.1"
+lachs = { version = "0.1.3", path = "../lachs/lachs/" }
+tokenkind = { path = "./crates/tokenkind/" }
