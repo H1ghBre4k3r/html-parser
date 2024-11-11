@@ -23,7 +23,7 @@ impl ParseStream {
     }
 
     pub fn peek(&self) -> Option<&Token> {
-        self.tokens.get(self.position + 1)
+        self.tokens.get(self.position)
     }
 
     #[allow(clippy::should_implement_trait)]

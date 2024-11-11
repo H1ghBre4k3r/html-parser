@@ -50,6 +50,7 @@ impl<'a> Combinator<'a> {
     consumer!(SLASH, Slash);
     yielder!(IDENTIFIER, ParsedIdentifier);
     yielder!(VALUE, ParsedValue);
+    yielder!(ATTRIBUTE, Attribute);
 
     pub fn try_parse(&self, tokens: &mut ParseStream) -> Result<Vec<AstNode>, ParseError> {
         use Combinator::*;
