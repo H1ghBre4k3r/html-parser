@@ -1,7 +1,7 @@
 use html_parser::{Combinator, ParseStream};
 
 fn main() {
-    let lex = html_parser::Token::lex("<foo test=\"yes\">").unwrap();
+    let lex = html_parser::Token::lex(r#"<foo test="yes">"#).unwrap();
 
     let mut parse_stream = ParseStream::new(lex);
 

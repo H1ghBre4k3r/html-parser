@@ -2,33 +2,37 @@ use std::ops::Shr;
 
 use crate::lexer::*;
 
-use super::ParseStream;
+use super::ast::*;
+use super::Parseable;
+use super::{AstNode, ParseStream};
 
-#[derive(Debug, Clone)]
-pub enum Combinator {
+#[derive(Clone)]
+pub enum Combinator<'a> {
     /// Combinator which consumes a token and does not yield anything.
     Consumer { token: TokenKind },
     /// Combinator which consumes and yields a token.
-    Yielder { token: TokenKind },
+    Yielder {
+        parser: &'a dyn Fn(&mut ParseStream) -> Result<AstNode, ParseError>,
+    },
     /// Combinator for chaining two other combinators together.
     Sequence {
-        left: Box<Combinator>,
-        right: Box<Combinator>,
+        left: Box<Combinator<'a>>,
+        right: Box<Combinator<'a>>,
     },
 }
 
 macro_rules! consumer {
     ($name:ident, $token:ident) => {
-        pub const $name: Combinator = Combinator::Consumer {
+        pub const $name: Combinator<'static> = Combinator::Consumer {
             token: TokenKind::$token,
         };
     };
 }
 
 macro_rules! yielder {
-    ($name:ident, $token:ident) => {
-        pub const $name: Combinator = Combinator::Yielder {
-            token: TokenKind::$token,
+    ($name:ident, $struct:ident) => {
+        pub const $name: Combinator<'static> = Combinator::Yielder {
+            parser: &$struct::try_parse,
         };
     };
 }
@@ -39,16 +43,15 @@ pub enum ParseError {
     Eof,
 }
 
-impl Combinator {
+impl<'a> Combinator<'a> {
     consumer!(LANGLE, LAngle);
     consumer!(RANGLE, RAngle);
     consumer!(EQUALS, Equals);
     consumer!(SLASH, Slash);
-    yielder!(NUMBER, Number);
-    yielder!(IDENTIFIER, Identifier);
-    yielder!(VALUE, Value);
+    yielder!(IDENTIFIER, ParsedIdentifier);
+    yielder!(VALUE, ParsedValue);
 
-    pub fn try_parse(&self, tokens: &mut ParseStream) -> Result<Vec<Token>, ParseError> {
+    pub fn try_parse(&self, tokens: &mut ParseStream) -> Result<Vec<AstNode>, ParseError> {
         use Combinator::*;
 
         match self {
@@ -63,16 +66,9 @@ impl Combinator {
                     Err(ParseError::Eof)
                 }
             }
-            Yielder { token } => {
-                if let Some(next) = tokens.next() {
-                    if *token == next {
-                        Ok(vec![next])
-                    } else {
-                        Err(ParseError::Mismatch(*token, next))
-                    }
-                } else {
-                    Err(ParseError::Eof)
-                }
+            Yielder { parser } => {
+                let result = parser(tokens)?;
+                Ok(vec![result])
             }
             Sequence { left, right } => left.try_parse(tokens).map(|mut first_result| {
                 right.try_parse(tokens).map(|mut second_result| {
@@ -84,7 +80,7 @@ impl Combinator {
     }
 }
 
-impl Shr for Combinator {
+impl<'a> Shr for Combinator<'a> {
     type Output = Self;
 
     fn shr(self, rhs: Self) -> Self::Output {
@@ -99,7 +95,7 @@ impl Shr for Combinator {
 mod tests {
     use lachs::Span;
 
-    use crate::{Identifier, ParseStream};
+    use crate::{AstNode, ParseStream, ParsedIdentifier};
 
     use super::{Combinator, Token};
 
@@ -128,7 +124,7 @@ mod tests {
 
         assert_eq!(
             result,
-            Ok(vec![Token::Identifier(Identifier {
+            Ok(vec![AstNode::Identifier(ParsedIdentifier {
                 position: Span::default(),
                 value: String::from("foo")
             })])
@@ -144,7 +140,7 @@ mod tests {
 
         assert_eq!(
             result,
-            Ok(vec![Token::Identifier(Identifier {
+            Ok(vec![AstNode::Identifier(ParsedIdentifier {
                 position: Span::default(),
                 value: String::from("foo")
             })])

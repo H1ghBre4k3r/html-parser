@@ -11,8 +11,6 @@ pub enum Token {
     Equals,
     #[terminal("/")]
     Slash,
-    #[literal("[1-9][0-9]*")]
-    Number,
     #[literal("[^\\s\\\"\\'<>=/]+")]
     Identifier,
     #[literal("\\\"[^\\\"]*\\\"")]
