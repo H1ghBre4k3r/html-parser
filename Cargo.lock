@@ -30,9 +30,9 @@ dependencies = [
 
 [[package]]
 name = "lachs"
-version = "0.1.1"
+version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "63cf2aaa183901d6c1d80f91ed3849a60c742b669637b4d42a50a44fffe80119"
+checksum = "71cc8986ec759fea9c494f661fe8a3991c01594080c46d20110b502cb29732e9"
 dependencies = [
  "colored",
  "lachs_derive",

@@ -9,4 +9,4 @@ repository = "https://github.com/H1ghBre4k3r/html-parser"
 description = "Fast and simple (and hopefully at some point spec compliant) HTML parser."
 
 [dependencies]
-lachs = "0.1.1"
+lachs = "0.1.3"
