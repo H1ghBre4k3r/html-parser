@@ -43,7 +43,7 @@ pub enum ParseError {
     Eof,
 }
 
-impl<'a> Combinator<'a> {
+impl Combinator<'_> {
     consumer!(LANGLE, LAngle);
     consumer!(RANGLE, RAngle);
     consumer!(EQUALS, Equals);
@@ -81,7 +81,7 @@ impl<'a> Combinator<'a> {
     }
 }
 
-impl<'a> Shr for Combinator<'a> {
+impl Shr for Combinator<'_> {
     type Output = Self;
 
     fn shr(self, rhs: Self) -> Self::Output {

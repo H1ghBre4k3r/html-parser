@@ -1,6 +1,6 @@
 use lachs::Span;
 
-use crate::{Identifier, ParseError, Parseable, Token, TokenKind, Value};
+use crate::{Identifier, ParseError, Parseable, Token, TokenKind};
 
 use super::{AstNode, ParsedValue};
 
@@ -13,7 +13,6 @@ pub enum Attribute {
     },
     Boolean {
         key: String,
-        set: bool,
         position: Span,
     },
 }
@@ -33,11 +32,7 @@ impl Parseable for Attribute {
         };
 
         let Some(Token::Equals(_)) = tokens.peek() else {
-            return Ok(AstNode::Attribute(Attribute::Boolean {
-                key,
-                set: true,
-                position,
-            }));
+            return Ok(AstNode::Attribute(Attribute::Boolean { key, position }));
         };
 
         tokens.next();
@@ -54,18 +49,10 @@ impl Parseable for Attribute {
 
         let position = position.merge(&end);
 
-        if let Ok(set) = value.parse::<bool>() {
-            Ok(AstNode::Attribute(Attribute::Boolean {
-                key: value,
-                set,
-                position,
-            }))
-        } else {
-            Ok(AstNode::Attribute(Attribute::KeyValue {
-                key,
-                value,
-                position,
-            }))
-        }
+        Ok(AstNode::Attribute(Attribute::KeyValue {
+            key,
+            value,
+            position,
+        }))
     }
 }
