@@ -1,9 +1,11 @@
 mod ast;
 mod combinators;
+mod error;
 mod parse_stream;
 
 pub use ast::*;
 pub use combinators::*;
+pub use error::*;
 pub use parse_stream::*;
 
 pub trait Parseable {

@@ -1,8 +1,10 @@
+use std::ops::Not;
 use std::ops::Shr;
 
 use crate::lexer::*;
 
 use super::ast::*;
+use super::ParseError;
 use super::Parseable;
 use super::{AstNode, ParseStream};
 
@@ -19,6 +21,8 @@ pub enum Combinator<'a> {
         left: Box<Combinator<'a>>,
         right: Box<Combinator<'a>>,
     },
+    /// Combinator which might "fail" and not yield any token
+    Optional { parser: Box<Combinator<'a>> },
 }
 
 macro_rules! consumer {
@@ -35,12 +39,6 @@ macro_rules! yielder {
             parser: &$struct::try_parse,
         };
     };
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub enum ParseError {
-    Mismatch(TokenKind, Token),
-    Eof,
 }
 
 impl Combinator<'_> {
@@ -77,6 +75,16 @@ impl Combinator<'_> {
                     first_result
                 })
             })?,
+            Optional { parser } => {
+                let pos = tokens.position();
+
+                if let Ok(res) = parser.try_parse(tokens) {
+                    Ok(res)
+                } else {
+                    tokens.set_position(pos);
+                    Ok(vec![])
+                }
+            }
         }
     }
 }
@@ -88,6 +96,16 @@ impl Shr for Combinator<'_> {
         Combinator::Sequence {
             left: Box::new(self),
             right: Box::new(rhs),
+        }
+    }
+}
+
+impl Not for Combinator<'_> {
+    type Output = Self;
+
+    fn not(self) -> Self::Output {
+        Combinator::Optional {
+            parser: Box::new(self),
         }
     }
 }
